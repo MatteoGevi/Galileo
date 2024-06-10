@@ -1,0 +1,10 @@
+galileo_env/
+__pycache__/
+*.pyc
+*.pyo
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+data/
