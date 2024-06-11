@@ -5,14 +5,20 @@ from agents import MathAgent
 math_agent = MathAgent()
 
 # Streamlit app layout
-st.title("Math AI WebApp")
+st.title("Galileo: AI Math Assistant")
 
 # File uploader for textbook
-uploaded_file = st.file_uploader("Upload a math textbook", type=["txt"])
+uploaded_file = st.file_uploader("Upload a math textbook as PDF", type=["pdf"])
 if uploaded_file:
-    content = uploaded_file.read().decode('utf-8')
-    math_agent.textbook = content
-    st.success("Textbook uploaded successfully!")
+    # Save the uploaded file temporarily
+    with open("uploaded_textbook.pdf", "wb") as f:
+        f.write(uploaded_file.getbuffer())
+else:
+    "To continue, I need to inspect a textbook. Please upload the book given by your teacher"
+    
+    # Load the PDF into the math agent
+    math_agent.load_textbook("uploaded_textbook.pdf")
+    st.success("Textbook uploaded and processed successfully!")
 
 # User question input
 st.header("Ask a question about math")

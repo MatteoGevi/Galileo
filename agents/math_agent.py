@@ -1,3 +1,4 @@
+import fitz  # PyMuPDF
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 class MathAgent:
@@ -8,8 +9,13 @@ class MathAgent:
         self.textbook = ""
 
     def load_textbook(self, filepath):
-        with open(filepath, 'r', encoding='utf-8') as file:
-            self.textbook = file.read()
+        # Read PDF and extract text
+        pdf_document = fitz.open(filepath)
+        text = ""
+        for page_num in range(pdf_document.page_count):
+            page = pdf_document.load_page(page_num)
+            text += page.get_text()
+        self.textbook = text
 
     def generate_response(self, question):
         prompt = f"{self.textbook}\n\nUser: {question}\nMath AI:"
