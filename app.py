@@ -2,8 +2,19 @@ import streamlit as st
 from agents import MathAgent
 import os
 
-# Print current working directory for debugging
-st.write("Current working directory:", os.getcwd())
+# Function to handle file upload and reset state
+def upload_pdf():
+    uploaded_file = st.file_uploader("Upload a math textbook (PDF)", type=["pdf"])
+    if uploaded_file:
+        # Save the uploaded file temporarily
+        with open("uploaded_textbook.pdf", "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        
+        # Load the PDF into the math agent
+        math_agent.load_textbook("uploaded_textbook.pdf")
+        st.success("Textbook uploaded and processed successfully!")
+        # Update the session state
+        st.session_state['uploaded_file'] = uploaded_file.name
 
 # Create agent instance
 math_agent = MathAgent()
@@ -11,16 +22,16 @@ math_agent = MathAgent()
 # Streamlit app layout
 st.title("Math AI WebApp")
 
-# File uploader for textbook
-uploaded_file = st.file_uploader("Upload a math textbook (PDF)", type=["pdf"])
-if uploaded_file:
-    # Save the uploaded file temporarily
-    with open("uploaded_textbook.pdf", "wb") as f:
-        f.write(uploaded_file.getbuffer())
-    
-    # Load the PDF into the math agent
-    math_agent.load_textbook("uploaded_textbook.pdf")
-    st.success("Textbook uploaded and processed successfully!")
+# Initialize session state
+if 'uploaded_file' not in st.session_state:
+    st.session_state['uploaded_file'] = None
+
+# Handle file upload
+upload_pdf()
+
+# Clear the file upload state when a new file is uploaded
+if st.session_state['uploaded_file']:
+    st.button("Clear uploaded file", on_click=lambda: st.session_state.update({'uploaded_file': None}))
 
 # User question input
 st.header("Ask a question about math")
