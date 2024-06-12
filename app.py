@@ -1,5 +1,5 @@
 import streamlit as st
-from agents import MathAgent
+from agents.math_agent import MathAgent
 import os
 
 # Function to handle file upload and reset state
