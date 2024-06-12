@@ -13,12 +13,13 @@ if uploaded_file:
     # Save the uploaded file temporarily
     with open("uploaded_textbook.pdf", "wb") as f:
         f.write(uploaded_file.getbuffer())
-else:
-    "To continue, I need to inspect a textbook. Please upload the book given by your teacher"
     
     # Load the PDF into the math agent
     math_agent.load_textbook("uploaded_textbook.pdf")
     st.success("Textbook uploaded and processed successfully!")
+
+else:
+    "To continue, I need to inspect a textbook. Please upload the book given by your teacher"
 
 # User question input
 st.header("Ask a question about math")
