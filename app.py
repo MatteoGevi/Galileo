@@ -40,7 +40,19 @@ def display_typing_effect(answer, placeholder, delay=0.05):
     answer_text = ""
     for char in answer:
         answer_text += char
-        placeholder.markdown(f"<div style='border: 1px solid #ccc; padding: 10px; border-radius: 10px; background-color: #f0f2f6;'>{answer_text}</div>", unsafe_allow_html=True)
+        placeholder.markdown(
+            f"""
+            <div style='
+                border: 1px solid #333;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: #262730; /* Matching dark theme */
+                color: #fafafa; /* Light color for readability on dark background */
+                font-size: 16px;
+            '>{answer_text}</div>
+            """,
+            unsafe_allow_html=True
+        )
         time.sleep(delay)  # Delay for typing effect
 
 if __name__ == "__main__":

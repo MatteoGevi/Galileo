@@ -39,14 +39,19 @@ def ask_gpt(text_chunk, question):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# Function to handle chunking and asking the model
-def handle_large_text(text, question):
+def handle_large_text(text, question, max_chunks=5):
+    """
+    Process the large text by breaking it into chunks and using OpenAI API to get answers.
+    Only processes a maximum number of chunks for efficiency.
+    """
     chunks = chunk_text(text)
     answers = []
     
-    for chunk in chunks:
+    for i, chunk in enumerate(chunks):
+        if i >= max_chunks:  # Limit the number of chunks processed
+            break
         answer = ask_gpt(chunk, question)
         answers.append(answer)
     
-    # Combine answers from all chunks
+    # Combine answers from processed chunks
     return ' '.join(answers)
